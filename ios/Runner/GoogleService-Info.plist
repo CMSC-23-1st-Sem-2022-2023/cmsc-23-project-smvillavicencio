@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>269585609130-6svqb595amfe4g23d1326bdkq9kfu21j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.269585609130-6svqb595amfe4g23d1326bdkq9kfu21j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDxLUVXyvTdPf3VQQlFAZPhJ1--6CrO94s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>269585609130</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.cmsc23ProjectVillavicencio</string>
+	<key>PROJECT_ID</key>
+	<string>cmsc23-project-villavicencio</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cmsc23-project-villavicencio.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:269585609130:ios:37a75c223f767c96d9bbd3</string>
+</dict>
+</plist>

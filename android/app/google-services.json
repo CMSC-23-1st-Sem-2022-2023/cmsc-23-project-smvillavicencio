@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "269585609130",
+    "project_id": "cmsc23-project-villavicencio",
+    "storage_bucket": "cmsc23-project-villavicencio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269585609130:android:0ab56009ab16e78ed9bbd3",
+        "android_client_info": {
+          "package_name": "com.example.cmsc23_project_villavicencio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269585609130-i1vt0up9an45bbdcjdm43g5gnb2tbkkf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0KEsaaUFJMVYvMz2qKxy3zmfF6f0VorY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269585609130-i1vt0up9an45bbdcjdm43g5gnb2tbkkf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
