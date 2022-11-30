@@ -41,6 +41,9 @@ dependencies:
   fake_cloud_firestore: ^2.0.1
   firebase_auth_mocks: ^0.9.1
   provider: ^6.0.4
+  date_field: ^3.0.0
+  fluttertoast: ^8.1.1
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
