@@ -15,7 +15,7 @@ class UsersProvider with ChangeNotifier {
 
   UsersProvider() {
     firebaseService = FirebaseUsersAPI();
-    // fetchAllUsers();
+    fetchAllUsers();
   }
 
   Stream<QuerySnapshot> get users => _usersStream;
@@ -26,33 +26,33 @@ class UsersProvider with ChangeNotifier {
     // notifyListeners();
   }
 
-  // fetchAllUsers() {
-  //   _usersStream = firebaseService.getAllUsers();
-  //   notifyListeners();
-  // }
+  fetchAllUsers() {
+    _usersStream = firebaseService.getAllUsers();
+    notifyListeners();
+  }
 
-  // unfriendUser(String currId, String friendId) {
-  //   firebaseService.removeFriend(currId, friendId);
-  //   notifyListeners();
-  // }
+  unfriendUser(String currId, String friendId) {
+    firebaseService.removeFriend(currId, friendId);
+    notifyListeners();
+  }
 
-  // acceptRequest(String currId, String senderId) {
-  //   firebaseService.acceptUser(currId, senderId);
-  //   notifyListeners();
-  // }
+  acceptRequest(String currId, String senderId) {
+    firebaseService.acceptUser(currId, senderId);
+    notifyListeners();
+  }
 
-  // rejectRequest(String currId, String senderId) {
-  //   firebaseService.rejectUser(currId, senderId);
-  //   notifyListeners();
-  // }
+  rejectRequest(String currId, String senderId) {
+    firebaseService.rejectUser(currId, senderId);
+    notifyListeners();
+  }
 
-  // cancelRequest(String currId, String senderId) {
-  //   firebaseService.cancelFriendRequest(currId, senderId);
-  //   notifyListeners();
-  // }
+  cancelRequest(String currId, String senderId) {
+    firebaseService.cancelFriendRequest(currId, senderId);
+    notifyListeners();
+  }
 
-  // addFriend(String currId, String senderId) {
-  //   firebaseService.addUser(currId, senderId);
-  //   notifyListeners();
-  // }
+  addFriend(String currId, String senderId) {
+    firebaseService.addUser(currId, senderId);
+    notifyListeners();
+  }
 }

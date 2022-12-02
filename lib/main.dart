@@ -1,6 +1,9 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
+import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
+import 'package:cmsc23_project_villavicencio/screens/friends_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/login_page.dart';
+import 'package:cmsc23_project_villavicencio/screens/todo_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +18,7 @@ void main() async {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: ((context) => UsersProvider())),
+      ChangeNotifierProvider(create: ((context) => TodoListProvider())),
       ChangeNotifierProvider(create: ((context) => AuthProvider())),
     ], child: const MyApp()),
   );
@@ -29,7 +33,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SimpleTodo',
       initialRoute: '/',
-      routes: {'/': (context) => const AuthWrapper()},
+      routes: {
+        '/': (context) => const AuthWrapper(),
+        '/todo': (context) => TodoPage(),
+        '/friends': (context) => FriendsPage(),
+      },
       theme: ThemeData(
         textTheme: GoogleFonts.robotoTextTheme(),
         // displayColor: Colors.white,
