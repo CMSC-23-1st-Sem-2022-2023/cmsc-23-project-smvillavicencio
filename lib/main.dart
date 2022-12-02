@@ -1,4 +1,5 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
+import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
 import 'package:cmsc23_project_villavicencio/screens/login_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-      MultiProvider(
-        providers: [
-          // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
-          ChangeNotifierProvider(create: ((context) => AuthProvider())),
-        ],
-        child: const MyApp()
-      ),
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: ((context) => UsersProvider())),
+      ChangeNotifierProvider(create: ((context) => AuthProvider())),
+    ], child: const MyApp()),
   );
 }
 
@@ -46,7 +44,8 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.watch<AuthProvider>().isAuthenticated) {
-      return const ProfilePage();
+      String userUid = context.watch<AuthProvider>().user!.uid;
+      return ProfilePage(uid: userUid);
     } else {
       return const LoginPage();
     }
