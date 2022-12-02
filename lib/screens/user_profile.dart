@@ -1,6 +1,7 @@
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
+import 'package:cmsc23_project_villavicencio/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,40 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title: const Text('Profile'),
         ),
-        drawer: Drawer(
-            child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
-            ),
-            ListTile(
-              leading: Icon(Icons.checklist),
-              title: Text('To Do'),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () {
-                context.read<AuthProvider>().signOut();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        )),
+        drawer: DrawerWidget(),
         body: Center(
           child: Container(
             child: StreamBuilder(
