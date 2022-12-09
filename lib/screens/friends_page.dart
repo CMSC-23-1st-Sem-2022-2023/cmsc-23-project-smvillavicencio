@@ -1,6 +1,7 @@
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
+import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:cmsc23_project_villavicencio/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -371,6 +372,12 @@ class _FriendsPageState extends State<FriendsPage> {
           title: Text("${user.firstName} ${user.lastName}"),
           leading: Text("@${user.username}"),
           onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(uid: user.id!),
+              ),
+            );
             print("go to profile");
           },
           trailing: ElevatedButton(

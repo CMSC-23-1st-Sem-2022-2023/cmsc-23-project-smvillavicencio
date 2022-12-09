@@ -1,10 +1,10 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
+import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -26,7 +26,9 @@ class DrawerWidget extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.account_circle),
           title: Text('Profile'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "/");
+          },
         ),
         ListTile(
           leading: Icon(Icons.checklist),

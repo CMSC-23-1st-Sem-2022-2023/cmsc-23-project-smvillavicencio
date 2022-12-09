@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Stream user = context.watch<UsersProvider>().user;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: Text("Profile"),
         ),
         drawer: DrawerWidget(),
         body: Center(
