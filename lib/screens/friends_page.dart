@@ -15,7 +15,7 @@ class FriendsPage extends StatefulWidget {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
-  final TextEditingController _searchController = TextEditingController();
+  late TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -25,6 +25,10 @@ class _FriendsPageState extends State<FriendsPage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   @override
@@ -284,44 +288,46 @@ class _FriendsPageState extends State<FriendsPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(20),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      style: TextStyle(color: Colors.black),
-                      controller: _searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        enabledBorder: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          // borderSide: BorderSide(color: Color(0xFF7E36C5)),
-                        ),
-                        focusedBorder: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          // borderSide: BorderSide(color: Color(0xFF7E36C5)),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey),
-                        fillColor: Colors.white70,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          // color: Color(0xFF7E36C5),
-                        ),
-                        suffixIcon: _searchQuery == ''
-                            ? null
-                            : IconButton(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            style: TextStyle(color: Colors.black),
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              enabledBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                // borderSide: BorderSide(color: Color(0xFF7E36C5)),
+                              ),
+                              focusedBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                // borderSide: BorderSide(color: Color(0xFF7E36C5)),
+                              ),
+                              filled: true,
+                              hintStyle: TextStyle(color: Colors.grey),
+                              fillColor: Colors.white70,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                // color: Color(0xFF7E36C5),
+                              ),
+                              suffixIcon: IconButton(
                                 icon: Icon(Icons.close),
                                 onPressed: () {
-                                  setState(() {
-                                    _searchQuery = '';
-                                    _searchController.clear();
-                                  });
+                                  _searchController.clear();
                                 },
                               ),
-                        hintText: 'Search...',
-                      ),
+                              hintText: 'Search...',
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            refresh();
+                          },
+                          child: Text("Search"),
+                        ),
+                      ],
                     ),
                   ),
                   ListView.builder(
@@ -332,17 +338,16 @@ class _FriendsPageState extends State<FriendsPage> {
                       User user = User.fromJson(snapshotUsers.data?.docs[index]
                           .data() as Map<String, dynamic>);
 
-                      if (_searchQuery == '') {
+                      if (_searchController.text == "") {
                         return Container();
-                      } else if (user.username
+                      } else if ((user.username
                               .toLowerCase()
-                              .contains(_searchQuery.toLowerCase()) ||
+                              .contains(_searchController.text.toLowerCase()) ||
                           user.firstName
                               .toLowerCase()
-                              .contains(_searchQuery.toLowerCase()) ||
-                          user.lastName
-                              .toLowerCase()
-                              .contains(_searchQuery.toLowerCase())) {
+                              .contains(_searchController.text.toLowerCase()) ||
+                          user.lastName.toLowerCase().contains(
+                              _searchController.text.toLowerCase()))) {
                         return _buildButtons(user, currUser);
                       } else {
                         return Container();
@@ -363,8 +368,11 @@ class _FriendsPageState extends State<FriendsPage> {
   ListTile _buildButtons(User user, User currUser) {
     if (currUser.friends.contains(user.id)) {
       return ListTile(
-          title: Text("${user.firstName} ${currUser.lastName}"),
+          title: Text("${user.firstName} ${user.lastName}"),
           leading: Text("@${user.username}"),
+          onTap: () {
+            print("go to profile");
+          },
           trailing: ElevatedButton(
             onPressed: () {
               context
@@ -378,7 +386,7 @@ class _FriendsPageState extends State<FriendsPage> {
           ));
     } else if (currUser.receivedFriendRequests.contains(user.id)) {
       return ListTile(
-          title: Text("${user.firstName} ${currUser.lastName}"),
+          title: Text("${user.firstName} ${user.lastName}"),
           leading: Text("@${user.username}"),
           trailing: Row(mainAxisSize: MainAxisSize.min, children: [
             ElevatedButton(
@@ -406,7 +414,7 @@ class _FriendsPageState extends State<FriendsPage> {
           ]));
     } else if (currUser.sentFriendRequest.contains(user.id)) {
       return ListTile(
-          title: Text("${user.firstName} ${currUser.lastName}"),
+          title: Text("${user.firstName} ${user.lastName}"),
           leading: Text("@${user.username}"),
           trailing: ElevatedButton(
             onPressed: () {
@@ -421,12 +429,12 @@ class _FriendsPageState extends State<FriendsPage> {
           ));
     } else if (currUser.id == user.id) {
       return ListTile(
-        title: Text("${user.firstName} ${currUser.lastName}"),
+        title: Text("${user.firstName} ${user.lastName}"),
         leading: Text("@${user.username}"),
       );
     } else {
       return ListTile(
-          title: Text("${user.firstName} ${currUser.lastName}"),
+          title: Text("${user.firstName} ${user.lastName}"),
           leading: Text("@${user.username}"),
           trailing: ElevatedButton(
             onPressed: () {
