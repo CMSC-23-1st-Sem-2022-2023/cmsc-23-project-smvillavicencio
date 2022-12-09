@@ -1,15 +1,22 @@
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TodoModal extends StatelessWidget {
   String type;
+  String uid;
   TextEditingController _formFieldController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _deadlineController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   TodoModal({
     super.key,
     required this.type,
+    required this.uid,
   });
 
   // Method to show the title of the modal depending on the functionality
@@ -26,6 +33,49 @@ class TodoModal extends StatelessWidget {
     }
   }
 
+  Form _buildForm(BuildContext context, Map<String, String> hintText) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            controller: _titleController =
+                TextEditingController(text: hintText["title"]),
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: 'Title',
+              hintText: hintText["title"],
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Title is required";
+              }
+            },
+          ),
+          TextFormField(
+            controller: _descriptionController,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: 'Description',
+              hintText: hintText["description"],
+            ),
+          ),
+          DateTimeFormField(
+            decoration: const InputDecoration(
+              suffixIcon: Icon(Icons.event_note),
+              labelText: 'Deadline',
+            ),
+            mode: DateTimeFieldPickerMode.date,
+            onDateSelected: (value) {
+              _deadlineController.text =
+                  "${value.year.toString()}-${value.month.toString()}-${value.day.toString()}";
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   // Method to build the content or body depending on the functionality
   Widget _buildContent(BuildContext context) {
     switch (type) {
@@ -36,22 +86,14 @@ class TodoModal extends StatelessWidget {
           );
         }
       case 'Edit':
-        {
-          return TextField(
-            controller: _formFieldController,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              hintText: context.read<TodoListProvider>().selected.title,
-            ),
-          );
-        }
+        Map<String, String> hintText = {
+          "title": context.read<TodoListProvider>().selected.title,
+          "description": context.read<TodoListProvider>().selected.description,
+        };
+        return _buildForm(context, hintText);
+
       default:
-        return TextField(
-          controller: _formFieldController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-          ),
-        );
+        return _buildForm(context, {"title": "", "description": ""});
     }
   }
 
@@ -63,28 +105,35 @@ class TodoModal extends StatelessWidget {
         switch (type) {
           case 'Add':
             {
-              // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
-              Todo temp = Todo(
-                  userId: 1,
+              if (_formKey.currentState!.validate()) {
+                // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
+                Todo temp = Todo(
+                  userId: uid,
                   completed: false,
-                  title: _formFieldController.text);
+                  deadline: _deadlineController.text,
+                  description: _descriptionController.text,
+                  title: _titleController.text,
+                );
 
-              context.read<TodoListProvider>().addTodo(temp);
+                context.read<TodoListProvider>().addTodo(temp);
 
-              // Remove dialog after adding
-              Navigator.of(context).pop();
+                // Remove dialog after adding
+                Navigator.of(context).pop();
+              }
               break;
             }
           case 'Edit':
-            {
-              context
-                  .read<TodoListProvider>()
-                  .editTodo(_formFieldController.text);
+            if (_formKey.currentState!.validate()) {
+              context.read<TodoListProvider>().editTodo(
+                    _titleController.text,
+                    _descriptionController.text,
+                    _deadlineController.text,
+                  );
 
               // Remove dialog after editing
               Navigator.of(context).pop();
-              break;
             }
+            break;
           case 'Delete':
             {
               context.read<TodoListProvider>().deleteTodo();
@@ -97,7 +146,6 @@ class TodoModal extends StatelessWidget {
       },
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.labelLarge,
-        primary: Color(0xFF5F18C5),
       ),
       child: Text(type),
     );
@@ -118,9 +166,8 @@ class TodoModal extends StatelessWidget {
           },
           child: Text("Cancel"),
           style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-              primary: Color(0xFF5F18C5) // background
-              ),
+            textStyle: Theme.of(context).textTheme.labelLarge,
+          ),
         ),
       ],
     );

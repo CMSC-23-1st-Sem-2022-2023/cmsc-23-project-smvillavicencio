@@ -49,8 +49,8 @@ class DrawerWidget extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.logout),
           title: Text('Logout'),
-          onTap: () {
-            Navigator.pop(context);
+          onTap: () async {
+            // Navigator.pop(context);
             context.read<AuthProvider>().signOut();
             // Navigator.pop(context);
             Navigator.pushNamed(context, '/');

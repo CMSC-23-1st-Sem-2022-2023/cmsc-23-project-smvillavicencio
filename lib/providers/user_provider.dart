@@ -28,7 +28,7 @@ class UsersProvider with ChangeNotifier {
 
   fetchAllUsers() {
     _usersStream = firebaseService.getAllUsers();
-    notifyListeners();
+    // notifyListeners();
   }
 
   unfriendUser(String currId, String friendId) {

@@ -23,7 +23,7 @@ class TodoListProvider with ChangeNotifier {
 
   void fetchTodos() {
     _todosStream = firebaseService.getAllTodos();
-    notifyListeners();
+    // notifyListeners();
   }
 
   void addTodo(Todo item) async {
@@ -32,9 +32,9 @@ class TodoListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editTodo(String newString) async {
-    String message =
-        await firebaseService.editTodo(_selectedTodo!.id, newString);
+  void editTodo(String? title, String? description, String? deadline) async {
+    String message = await firebaseService.editTodo(
+        _selectedTodo!.id, title, description, deadline);
     print(message);
     notifyListeners();
   }

@@ -77,7 +77,7 @@ class FirebaseAuthAPI {
   }
 
   void signOut() async {
-    auth.signOut();
+    await auth.signOut();
   }
 
   Future<String> saveUserToFirestore(
