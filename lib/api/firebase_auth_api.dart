@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
-
 class FirebaseAuthAPI {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -24,7 +23,6 @@ class FirebaseAuthAPI {
   //   email: 'charlie@paddyspub.com',
   //   displayName: 'Charlie',
   // ));
-
 
   Stream<User?> getUser() {
     return auth.authStateChanges();
@@ -51,15 +49,23 @@ class FirebaseAuthAPI {
     }
   }
 
-  Future<String> signUp(String email, String password, String firstName, String lastName, String username, String birthday, String location) async {
+  Future<String> signUp(
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String username,
+      String birthday,
+      String location) async {
     UserCredential credential;
     try {
       credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
-      return saveUserToFirestore(credential.user?.uid, email, firstName, lastName, username, birthday, location);
+
+      return saveUserToFirestore(credential.user?.uid, email, firstName,
+          lastName, username, birthday, location);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
@@ -74,25 +80,33 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  Future<String> saveUserToFirestore(String? uid, String email, String firstName, String lastName, String username, String birthday, String location) async {
+  Future<String> saveUserToFirestore(
+      String? uid,
+      String email,
+      String firstName,
+      String lastName,
+      String username,
+      String birthday,
+      String location) async {
     try {
       await db.collection("users").doc(uid).set({
-        "email": email, 
-        "firstName": firstName, 
-        "lastName": lastName, 
-        "username": username, 
-        "birthday": birthday, 
-        "location": location, 
-        "friends": [], 
+        "id": uid,
+        "email": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "username": username,
+        "birthday": birthday,
+        "location": location,
+        "bio": "",
+        "friends": [],
         "receivedFriendRequests": [],
-        "sentFriendRequest": [],  
+        "sentFriendRequest": [],
       });
-      print( "Successfully signed up!");
+      print("Successfully signed up!");
       return "Successfully signed up!";
     } on FirebaseException catch (e) {
       print(e.message);
       return e.message.toString();
     }
   }
-
 }
