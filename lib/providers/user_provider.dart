@@ -55,4 +55,9 @@ class UsersProvider with ChangeNotifier {
     firebaseService.addUser(currId, senderId);
     notifyListeners();
   }
+
+  editBio(String bio, String userId) {
+    firebaseService.editBio(bio, userId);
+    notifyListeners();
+  }
 }

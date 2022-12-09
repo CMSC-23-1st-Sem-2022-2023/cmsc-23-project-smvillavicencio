@@ -1,6 +1,7 @@
 import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseUsersAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -96,6 +97,15 @@ class FirebaseUsersAPI {
       });
 
       return "Successfully cancelled friend request!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> editBio(String bio, String userId) async {
+    try {
+      await db.collection("users").doc(userId).update({"bio": bio});
+      return "Successfully edited bio.";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }

@@ -13,6 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController _bioController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     if (!context.watch<AuthProvider>().isAuthenticated) {
@@ -79,8 +80,103 @@ class _ProfilePageState extends State<ProfilePage> {
                             "No bio yet.",
                           )
                         : Text(
-                            "Location: ${profileUser.bio}",
+                            "Bio: ${profileUser.bio}",
                           ),
+                    profileUser.bio == ''
+                        ? ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible:
+                                    false, // user must tap button!
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Add bio"),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: <Widget>[
+                                          TextField(
+                                            controller: _bioController,
+                                            decoration: InputDecoration(
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              labelText: 'Bio',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Done'),
+                                        onPressed: () {
+                                          print('Done');
+                                          context.read<UsersProvider>().editBio(
+                                              _bioController.text, widget.uid);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text("Add bio"),
+                          )
+                        : ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible:
+                                    false, // user must tap button!
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Edit bio"),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: <Widget>[
+                                          TextField(
+                                            controller: _bioController =
+                                                TextEditingController(
+                                                    text: profileUser.bio),
+                                            decoration: InputDecoration(
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              labelText: 'Bio',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Done'),
+                                        onPressed: () {
+                                          print('Done');
+                                          context.read<UsersProvider>().editBio(
+                                              _bioController.text, widget.uid);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text("Edit bio"),
+                          )
                   ]),
                 );
               },
