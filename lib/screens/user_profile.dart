@@ -15,6 +15,21 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    if (!context.watch<AuthProvider>().isAuthenticated) {
+      return Center(
+        child: Column(
+          children: [
+            Text("You are not logged in!"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Back"),
+            ),
+          ],
+        ),
+      );
+    }
     context.watch<UsersProvider>().fetchOneUser(widget.uid);
 
     Stream user = context.watch<UsersProvider>().user;

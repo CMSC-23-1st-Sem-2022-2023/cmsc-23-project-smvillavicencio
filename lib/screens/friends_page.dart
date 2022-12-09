@@ -41,9 +41,26 @@ class _FriendsPageState extends State<FriendsPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!context.watch<AuthProvider>().isAuthenticated) {
+      return Center(
+        child: Column(
+          children: [
+            Text("You are not logged in!"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Back"),
+            ),
+          ],
+        ),
+      );
+    }
+
     Stream<QuerySnapshot> usersStream = context.watch<UsersProvider>().users;
     String uid = context.watch<AuthProvider>().user!.uid;
     context.watch<UsersProvider>().fetchOneUser(uid);
+    context.watch<UsersProvider>().fetchAllUsers();
     Stream<DocumentSnapshot> currentUserStream =
         context.watch<UsersProvider>().user;
     // Stream<QuerySnapshot> currentUserStream =
@@ -53,7 +70,7 @@ class _FriendsPageState extends State<FriendsPage> {
       _buildFriends(usersStream, currentUserStream), // friends
       _buildRequests(usersStream, currentUserStream), // friend requests
       _buildSearch(usersStream, currentUserStream), // friend requests
-    ];  
+    ];
 
     return Scaffold(
       appBar: AppBar(
