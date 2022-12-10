@@ -23,6 +23,7 @@ class UsersProvider with ChangeNotifier {
 
   fetchOneUser(String uid) {
     _user = firebaseService.getOneUser(uid);
+    // _userDisplayName = firebaseService.getUserDisplayName(uid);
     // notifyListeners();
   }
 

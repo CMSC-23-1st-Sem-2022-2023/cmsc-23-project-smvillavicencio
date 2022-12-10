@@ -1,9 +1,10 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
-import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
 // import 'package:exer7_villavicencio/providers/auth_provider.dart';
 
 class SignupPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _SignupPageState extends State<SignupPage> {
     TextEditingController lastNameController = TextEditingController();
     TextEditingController usernameController = TextEditingController();
     TextEditingController locationController = TextEditingController();
-    TextEditingController birthdayController = TextEditingController(); 
+    TextEditingController birthdayController = TextEditingController();
 
     final firstName = TextFormField(
       key: const Key("firstNameField"),
@@ -76,59 +77,69 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    final birthday = DateTimeFormField(
-      key: const Key("birthdayField"),
-      decoration: const InputDecoration(
-        suffixIcon: Icon(Icons.event_note),
-        labelText: 'Birthday',
+    final birthday = TextFormField(
+      controller: birthdayController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.today),
+        labelText: "Birthday",
       ),
-      mode: DateTimeFieldPickerMode.date,
+      readOnly: true,
+      onTap: () async {
+        await showDatePicker(
+          context: context,
+          initialDate: birthdayController.text == ""
+              ? DateTime.now()
+              : DateTime.parse(birthdayController.text),
+          firstDate: DateTime(1901),
+          lastDate: DateTime.now(),
+        ).then((value) {
+          if (value != null) {
+            birthdayController.text = DateFormat('yyyy-MM-dd').format(value);
+          }
+        });
+      },
       validator: (value) {
-        if (value == null) {
+        if (value == null || value.isEmpty) {
           return 'Birthday is required';
         }
-      },
-      onDateSelected: (value) {
-        birthdayController.text = "${value.year.toString()}-${value.month.toString()}-${value.day.toString()}";
       },
     );
 
     final location = TextFormField(
-      key: const Key("locationField"),
-      controller: locationController,
-      decoration: InputDecoration(
-        labelText: 'Location',
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Locatuon is required';
-        }
-      }
-    );
+        key: const Key("locationField"),
+        controller: locationController,
+        decoration: InputDecoration(
+          labelText: 'Location',
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Locatuon is required';
+          }
+        });
 
     final password = TextFormField(
-      key: const Key("pwField"),
-      controller: passwordController,
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Password',
-      ),
-      validator: (value) {
-        RegExp regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-        if (value == null || value.isEmpty) {
-          return 'Password is required';
-        } else if (!regex.hasMatch(value)){
-          return 'Enter a valid password';
-        }
-      }
-    );
+        key: const Key("pwField"),
+        controller: passwordController,
+        obscureText: true,
+        decoration: InputDecoration(
+          labelText: 'Password',
+        ),
+        validator: (value) {
+          RegExp regex = RegExp(
+              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+          if (value == null || value.isEmpty) {
+            return 'Password is required';
+          } else if (!regex.hasMatch(value)) {
+            return 'Enter a valid password';
+          }
+        });
 
     final signUpButton = Padding(
       key: const Key("signUpButton"),
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () async {
-          if(_formKey.currentState!.validate()){
+          if (_formKey.currentState!.validate()) {
             print("Signing up...");
             //call the auth provider here
             String? message = await context.read<AuthProvider>().signUp(
@@ -138,8 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                 lastNameController.text,
                 usernameController.text,
                 birthdayController.text,
-                locationController.text
-            );
+                locationController.text);
             if (message == "Successfully signed up!") {
               Navigator.pop(context);
             }
@@ -160,7 +170,9 @@ class _SignupPageState extends State<SignupPage> {
             );
           }
         },
-        child: const Text('Sign up',),
+        child: const Text(
+          'Sign up',
+        ),
       ),
     );
 
@@ -171,7 +183,9 @@ class _SignupPageState extends State<SignupPage> {
         onPressed: () async {
           Navigator.pop(context);
         },
-        child: const Text('Back',),
+        child: const Text(
+          'Back',
+        ),
       ),
     );
 
@@ -205,9 +219,7 @@ class _SignupPageState extends State<SignupPage> {
               const Text(
                 "Sign Up",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               signUpForm
             ],

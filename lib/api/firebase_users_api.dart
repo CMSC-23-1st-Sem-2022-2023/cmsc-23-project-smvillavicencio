@@ -15,6 +15,14 @@ class FirebaseUsersAPI {
     return db.collection("users").snapshots();
   }
 
+  // Future<String> getUserDisplayName(String uid) {
+  //   return db
+  //       .collection("users")
+  //       .doc(uid)
+  //       .get()
+  //       .then((value) => "${value["firstName"]} ${value["lastName"]}");
+  // }
+
   // Stream<QuerySnapshot> getCurrentUser() {
   //   // returns the logged in user
   //   return db
