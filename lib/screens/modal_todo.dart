@@ -1,13 +1,13 @@
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
-import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class TodoModal extends StatelessWidget {
   String type;
   String uid;
-  TextEditingController _formFieldController = TextEditingController();
+  String displayName;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _deadlineController = TextEditingController();
@@ -17,6 +17,7 @@ class TodoModal extends StatelessWidget {
     super.key,
     required this.type,
     required this.uid,
+    required this.displayName,
   });
 
   // Method to show the title of the modal depending on the functionality
@@ -53,22 +54,44 @@ class TodoModal extends StatelessWidget {
             },
           ),
           TextFormField(
-            controller: _descriptionController,
+            controller: _descriptionController =
+                TextEditingController(text: hintText["description"]),
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               labelText: 'Description',
               hintText: hintText["description"],
             ),
           ),
-          DateTimeFormField(
-            decoration: const InputDecoration(
-              suffixIcon: Icon(Icons.event_note),
-              labelText: 'Deadline',
+          TextFormField(
+            controller: _deadlineController =
+                TextEditingController(text: hintText["deadline"]),
+            decoration: InputDecoration(
+              icon: Icon(Icons.calendar_today),
+              labelText: "Deadline",
+              suffixIcon: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  _deadlineController.text = "";
+                },
+              ),
             ),
-            mode: DateTimeFieldPickerMode.date,
-            onDateSelected: (value) {
-              _deadlineController.text =
-                  "${value.year.toString()}-${value.month.toString()}-${value.day.toString()}";
+            readOnly: true,
+            onTap: () async {
+              await showDatePicker(
+                context: context,
+                initialDate: hintText["deadline"] == ""
+                    ? _deadlineController.text == ""
+                        ? DateTime.now()
+                        : DateTime.parse(_deadlineController.text)
+                    : DateTime.parse(hintText["deadline"]!),
+                firstDate: DateTime(2022),
+                lastDate: DateTime(2122),
+              ).then((value) {
+                if (value != null) {
+                  _deadlineController.text =
+                      DateFormat('yyyy-MM-dd').format(value);
+                }
+              });
             },
           ),
         ],
@@ -89,11 +112,13 @@ class TodoModal extends StatelessWidget {
         Map<String, String> hintText = {
           "title": context.read<TodoListProvider>().selected.title,
           "description": context.read<TodoListProvider>().selected.description,
+          "deadline": context.read<TodoListProvider>().selected.deadline,
         };
         return _buildForm(context, hintText);
 
       default:
-        return _buildForm(context, {"title": "", "description": ""});
+        return _buildForm(
+            context, {"title": "", "description": "", "deadline": ""});
     }
   }
 
@@ -113,9 +138,12 @@ class TodoModal extends StatelessWidget {
                   deadline: _deadlineController.text,
                   description: _descriptionController.text,
                   title: _titleController.text,
+                  lastEditedBy: displayName,
+                  lastEditedOn: DateFormat('EEE, MMM d, hh:mm aaa')
+                      .format(DateTime.now()),
                 );
 
-                context.read<TodoListProvider>().addTodo(temp);
+                context.read<TodoListProvider>().addTodo(temp, displayName);
 
                 // Remove dialog after adding
                 Navigator.of(context).pop();
@@ -128,6 +156,7 @@ class TodoModal extends StatelessWidget {
                     _titleController.text,
                     _descriptionController.text,
                     _deadlineController.text,
+                    displayName,
                   );
 
               // Remove dialog after editing
@@ -156,7 +185,6 @@ class TodoModal extends StatelessWidget {
     return AlertDialog(
       title: _buildTitle(),
       content: _buildContent(context),
-
       // Contains two buttons - add/edit/delete, and cancel
       actions: <Widget>[
         _dialogAction(context),

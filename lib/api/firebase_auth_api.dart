@@ -64,6 +64,8 @@ class FirebaseAuthAPI {
         password: password,
       );
 
+      await credential.user?.updateDisplayName("$firstName $lastName");
+
       return saveUserToFirestore(credential.user?.uid, email, firstName,
           lastName, username, birthday, location);
     } on FirebaseAuthException catch (e) {

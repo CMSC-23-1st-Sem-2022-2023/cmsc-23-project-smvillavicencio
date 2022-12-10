@@ -26,15 +26,17 @@ class TodoListProvider with ChangeNotifier {
     // notifyListeners();
   }
 
-  void addTodo(Todo item) async {
-    String message = await firebaseService.addTodo(item.toJson(item));
+  void addTodo(Todo item, String displayName) async {
+    String message =
+        await firebaseService.addTodo(item.toJson(item), displayName);
     print(message);
     notifyListeners();
   }
 
-  void editTodo(String? title, String? description, String? deadline) async {
+  void editTodo(String title, String description, String deadline,
+      String displayName) async {
     String message = await firebaseService.editTodo(
-        _selectedTodo!.id, title, description, deadline);
+        _selectedTodo!.id, title, description, deadline, displayName);
     print(message);
     notifyListeners();
   }

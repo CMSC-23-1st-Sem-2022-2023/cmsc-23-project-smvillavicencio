@@ -7,7 +7,8 @@ class Todo {
   String description;
   String deadline;
   bool completed;
-  // String modifiedBy;
+  String lastEditedBy;
+  String lastEditedOn;
   // DateTime lastModified = DateTime.now();
 
   Todo({
@@ -17,6 +18,8 @@ class Todo {
     required this.description,
     required this.deadline,
     required this.completed,
+    required this.lastEditedBy,
+    required this.lastEditedOn,
     // required this.modifiedBy,
     // required this.lastModified,
   });
@@ -30,6 +33,8 @@ class Todo {
       description: json['description'],
       deadline: json['deadline'],
       completed: json['completed'],
+      lastEditedBy: json['lastEditedBy'],
+      lastEditedOn: json['lastEditedOn'],
       // modifiedBy: json['modifiedBy'],
       // lastModified: json['lastModified'],
     );
@@ -47,6 +52,8 @@ class Todo {
       'description': todo.description,
       'deadline': todo.deadline,
       'completed': todo.completed,
+      'lastEditedBy': todo.lastEditedBy,
+      'lastEditedOn': todo.lastEditedOn,
       // 'modifiedBy': todo.modifiedBy,
       // 'lastModified': todo.lastModified,
     };

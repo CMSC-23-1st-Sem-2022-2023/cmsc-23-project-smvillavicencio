@@ -50,12 +50,13 @@ class _TodoPageState extends State<TodoPage> {
     context.watch<UsersProvider>().fetchOneUser(currentUserID);
     Stream<DocumentSnapshot> currentUserStream =
         context.watch<UsersProvider>().user;
+    String userDisplayName = context.watch<AuthProvider>().user!.displayName!;
     context.watch<TodoListProvider>().fetchTodos();
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
     List<Widget> _widgetOptions = <Widget>[
-      _buildMyToDo(todosStream, currentUserID),
-      _buildFriendsToDo(todosStream, currentUserStream),
+      _buildMyToDo(todosStream, currentUserID, userDisplayName),
+      _buildFriendsToDo(todosStream, currentUserStream, userDisplayName),
 
       // _buildFriends(usersStream, currentUserStream), // friends
       // _buildRequests(usersStream, currentUserStream), // friend requests
@@ -97,6 +98,7 @@ class _TodoPageState extends State<TodoPage> {
                   builder: (BuildContext context) => TodoModal(
                     type: 'Add',
                     uid: currentUserID,
+                    displayName: userDisplayName,
                   ),
                 );
               },
@@ -107,8 +109,8 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
-  StreamBuilder _buildMyToDo(
-      Stream<QuerySnapshot<Object?>> todosStream, String currentUserID) {
+  StreamBuilder _buildMyToDo(Stream<QuerySnapshot<Object?>> todosStream,
+      String currentUserID, String userDisplayName) {
     return StreamBuilder(
       stream: todosStream,
       builder: (context, snapshot) {
@@ -168,6 +170,7 @@ class _TodoPageState extends State<TodoPage> {
                           builder: (BuildContext context) => TodoModal(
                             type: 'Edit',
                             uid: currentUserID,
+                            displayName: userDisplayName,
                           ),
                         );
                       },
@@ -183,6 +186,7 @@ class _TodoPageState extends State<TodoPage> {
                           builder: (BuildContext context) => TodoModal(
                             type: 'Delete',
                             uid: currentUserID,
+                            displayName: userDisplayName,
                           ),
                         );
                       },
@@ -198,8 +202,10 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
-  StreamBuilder _buildFriendsToDo(Stream<QuerySnapshot<Object?>> todosStream,
-      Stream<DocumentSnapshot<Object?>> currentUserStream) {
+  StreamBuilder _buildFriendsToDo(
+      Stream<QuerySnapshot<Object?>> todosStream,
+      Stream<DocumentSnapshot<Object?>> currentUserStream,
+      String userDisplayName) {
     return StreamBuilder(
       stream: currentUserStream,
       builder: (context, snapshot) {
@@ -245,65 +251,32 @@ class _TodoPageState extends State<TodoPage> {
                 if (!currUser.friends.contains(todo.userId)) {
                   return Container();
                 }
-                return Dismissible(
-                  key: Key(todo.id.toString()),
-                  onDismissed: (direction) {
-                    context.read<TodoListProvider>().changeSelectedTodo(todo);
-                    context.read<TodoListProvider>().deleteTodo();
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${todo.title} dismissed')));
-                  },
-                  background: Container(
-                    color: Colors.red,
-                    child: const Icon(Icons.delete),
+                return ListTile(
+                  title: Text(todo.title),
+                  leading: Checkbox(
+                    value: todo.completed,
+                    onChanged: null,
                   ),
-                  child: ListTile(
-                    title: Text(todo.title),
-                    leading: Checkbox(
-                      value: todo.completed,
-                      onChanged: (bool? value) {
-                        context
-                            .read<TodoListProvider>()
-                            .changeSelectedTodo(todo);
-                        context.read<TodoListProvider>().toggleStatus(value!);
-                      },
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            context
-                                .read<TodoListProvider>()
-                                .changeSelectedTodo(todo);
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => TodoModal(
-                                type: 'Edit',
-                                uid: currUser.id!,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.create_outlined),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            context
-                                .read<TodoListProvider>()
-                                .changeSelectedTodo(todo);
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => TodoModal(
-                                type: 'Delete',
-                                uid: currUser.id!,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.delete_outlined),
-                        )
-                      ],
-                    ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context
+                              .read<TodoListProvider>()
+                              .changeSelectedTodo(todo);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => TodoModal(
+                              type: 'Edit',
+                              uid: currUser.id!,
+                              displayName: userDisplayName,
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.create_outlined),
+                      ),
+                    ],
                   ),
                 );
               }),

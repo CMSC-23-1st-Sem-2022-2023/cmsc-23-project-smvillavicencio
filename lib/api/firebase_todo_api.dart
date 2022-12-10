@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class FirebaseTodoAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   // final db = FakeFirebaseFirestore();
 
-  Future<String> addTodo(Map<String, dynamic> todo) async {
+  Future<String> addTodo(Map<String, dynamic> todo, String displayName) async {
     try {
       final docRef = await db.collection("todos").add(todo);
-      await db.collection("todos").doc(docRef.id).update({'id': docRef.id});
+      await db.collection("todos").doc(docRef.id).update({
+        'id': docRef.id,
+      });
 
       return "Successfully added todo!";
     } on FirebaseException catch (e) {
@@ -30,26 +33,17 @@ class FirebaseTodoAPI {
     }
   }
 
-  Future<String> editTodo(
-    String? id,
-    String? title,
-    String? description,
-    String? deadline,
-  ) async {
+  Future<String> editTodo(String? id, String title, String description,
+      String deadline, String displayName) async {
     try {
-      if (title!.isNotEmpty) {
-        await db.collection("todos").doc(id).update({"title": title});
-      }
-      if (description!.isNotEmpty) {
-        await db
-            .collection("todos")
-            .doc(id)
-            .update({"description": description});
-      }
-      if (deadline!.isNotEmpty) {
-        await db.collection("todos").doc(id).update({"deadline": deadline});
-      }
-
+      await db.collection("todos").doc(id).update({
+        "title": title,
+        "description": description,
+        "deadline": deadline,
+        "lastEditedBy": displayName,
+        "lastEditedOn":
+            DateFormat('EEE, MMM d, hh:mm aaa').format(DateTime.now()),
+      });
       return "Successfully edited todo!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
