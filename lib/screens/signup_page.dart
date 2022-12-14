@@ -36,7 +36,28 @@ class _SignupPageState extends State<SignupPage> {
       controller: firstNameController,
       decoration: InputDecoration(
         labelText: 'First Name',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'First name is required';
@@ -49,7 +70,28 @@ class _SignupPageState extends State<SignupPage> {
       controller: lastNameController,
       decoration: InputDecoration(
         labelText: 'Last Name',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Last name is required';
@@ -62,7 +104,28 @@ class _SignupPageState extends State<SignupPage> {
       controller: usernameController,
       decoration: InputDecoration(
         labelText: 'Username',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Username is required';
@@ -75,7 +138,28 @@ class _SignupPageState extends State<SignupPage> {
       controller: emailController,
       decoration: InputDecoration(
         labelText: 'Email',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Email is required';
@@ -88,7 +172,28 @@ class _SignupPageState extends State<SignupPage> {
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.today),
         labelText: "Birthday",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
       readOnly: true,
       onTap: () async {
         await showDatePicker(
@@ -116,7 +221,24 @@ class _SignupPageState extends State<SignupPage> {
         controller: locationController,
         decoration: InputDecoration(
           labelText: 'Location',
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelStyle: TextStyle(color: Colors.white),
+          enabledBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.teal),
+          ),
+          errorStyle: TextStyle(color: Colors.pink),
+          errorBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.pink),
+          ),
+          focusedBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.teal),
+          ),
         ),
+        cursorColor: Colors.white,
+        style: TextStyle(color: Colors.white),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Locatuon is required';
@@ -129,7 +251,24 @@ class _SignupPageState extends State<SignupPage> {
         obscureText: true,
         decoration: InputDecoration(
           labelText: 'Password',
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelStyle: TextStyle(color: Colors.white),
+          enabledBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.teal),
+          ),
+          errorStyle: TextStyle(color: Colors.pink),
+          errorBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.pink),
+          ),
+          focusedBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.teal),
+          ),
         ),
+        cursorColor: Colors.white,
+        style: TextStyle(color: Colors.white),
         validator: (value) {
           RegExp regex = RegExp(
               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
@@ -144,6 +283,10 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key("signUpButton"),
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.teal,
+          fixedSize: Size(100, 40),
+        ),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             print("Signing up...");
@@ -166,8 +309,8 @@ class _SignupPageState extends State<SignupPage> {
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: message == "Successfully signed up!"
-                  ? Colors.green
-                  : Colors.red,
+                  ? Colors.teal
+                  : Colors.pink,
               webBgColor: message == "Successfully signed up!"
                   ? "linear-gradient(to right, #4caf4f, #4caf4f)"
                   : "linear-gradient(to right, #dc1c13, #dc1c13)",
@@ -186,6 +329,10 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key("backButton"),
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.teal,
+          fixedSize: Size(100, 40),
+        ),
         onPressed: () async {
           Navigator.pop(context);
         },
@@ -201,13 +348,13 @@ class _SignupPageState extends State<SignupPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-            firstName,
-            lastName,
-            userName,
-            birthday,
-            location,
-            email,
-            password,
+            Padding(padding: EdgeInsets.all(10), child: firstName),
+            Padding(padding: EdgeInsets.all(10), child: lastName),
+            Padding(padding: EdgeInsets.all(10), child: userName),
+            Padding(padding: EdgeInsets.all(10), child: birthday),
+            Padding(padding: EdgeInsets.all(10), child: location),
+            Padding(padding: EdgeInsets.all(10), child: email),
+            Padding(padding: EdgeInsets.all(10), child: password),
             signUpButton,
             backButton
           ],

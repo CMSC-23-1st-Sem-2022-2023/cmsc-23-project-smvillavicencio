@@ -13,14 +13,26 @@ class DrawerWidget extends StatelessWidget {
       children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.teal,
           ),
-          child: Text(
-            'Shared To Do',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-            ),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.pink,
+                child: Icon(Icons.person),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  '${context.read<AuthProvider>().user!.displayName}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              )
+            ],
           ),
         ),
         ListTile(

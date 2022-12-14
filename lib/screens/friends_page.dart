@@ -319,10 +319,12 @@ class _FriendsPageState extends State<FriendsPage> {
                               hintStyle: TextStyle(color: Colors.grey),
                               fillColor: Colors.white70,
                               prefixIcon: Icon(
+                                color: Colors.teal,
                                 Icons.search,
                                 // color: Color(0xFF7E36C5),
                               ),
                               suffixIcon: IconButton(
+                                color: Colors.teal,
                                 icon: Icon(Icons.close),
                                 onPressed: () {
                                   _searchController.clear();
@@ -333,6 +335,10 @@ class _FriendsPageState extends State<FriendsPage> {
                           ),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            fixedSize: Size(100, 40),
+                          ),
                           onPressed: () {
                             refresh();
                           },
@@ -389,7 +395,6 @@ class _FriendsPageState extends State<FriendsPage> {
                 builder: (context) => ProfilePage(uid: user.id!),
               ),
             );
-            print("go to profile");
           },
           trailing: ElevatedButton(
             onPressed: () {
@@ -397,8 +402,7 @@ class _FriendsPageState extends State<FriendsPage> {
                   .read<UsersProvider>()
                   .unfriendUser(currUser.id!, user.id!);
             },
-            style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE80C3A) // background
+            style: ElevatedButton.styleFrom(primary: Colors.pink // background
                 ),
             child: Text("Unfriend"),
           ));
@@ -414,7 +418,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     .acceptRequest(currUser.id!, user.id!);
               },
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF66B032), // background
+                primary: Colors.teal, // background
               ),
               child: Text("Accept"),
             ),
@@ -425,7 +429,7 @@ class _FriendsPageState extends State<FriendsPage> {
                     .rejectRequest(currUser.id!, user.id!);
               },
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE80C3A), // background
+                primary: Colors.pink, // background
               ),
               child: Text("Reject"),
             ),
@@ -459,7 +463,7 @@ class _FriendsPageState extends State<FriendsPage> {
               context.read<UsersProvider>().addFriend(currUser.id!, user.id!);
             },
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF66B032), // background
+              primary: Colors.teal, // background
             ),
             child: Text("Add Friend"),
           ));

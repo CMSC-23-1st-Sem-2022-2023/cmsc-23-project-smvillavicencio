@@ -67,61 +67,127 @@ class _TodoModalState extends State<TodoModal> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          TextFormField(
-            controller: _titleController =
-                TextEditingController(text: hintText["title"]),
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: 'Title',
-              hintText: hintText["title"],
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _titleController =
+                  TextEditingController(text: hintText["title"]),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'Title',
+                hintText: hintText["title"],
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
+                errorStyle: TextStyle(color: Colors.pink),
+                errorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedErrorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Title is required";
+                }
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Title is required";
-              }
-            },
           ),
-          TextFormField(
-            controller: _descriptionController =
-                TextEditingController(text: hintText["description"]),
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: 'Description',
-              hintText: hintText["description"],
-            ),
-          ),
-          TextFormField(
-            controller: _deadlineController =
-                TextEditingController(text: hintText["deadline"]),
-            decoration: InputDecoration(
-              icon: Icon(Icons.calendar_today),
-              labelText: "Deadline",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  _deadlineController.text = "";
-                },
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _descriptionController =
+                  TextEditingController(text: hintText["description"]),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'Description',
+                hintText: hintText["description"],
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
+                errorStyle: TextStyle(color: Colors.pink),
+                errorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedErrorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
               ),
             ),
-            readOnly: true,
-            onTap: () async {
-              await showDatePicker(
-                context: context,
-                initialDate: hintText["deadline"] == ""
-                    ? _deadlineController.text == ""
-                        ? DateTime.now()
-                        : DateTime.parse(_deadlineController.text)
-                    : DateTime.parse(hintText["deadline"]!),
-                firstDate: DateTime(2022),
-                lastDate: DateTime(2122),
-              ).then((value) {
-                if (value != null) {
-                  _deadlineController.text =
-                      DateFormat('yyyy-MM-dd').format(value);
-                }
-              });
-            },
           ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _deadlineController =
+                  TextEditingController(text: hintText["deadline"]),
+              decoration: InputDecoration(
+                icon: Icon(Icons.calendar_today),
+                labelText: "Deadline",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    _deadlineController.text = "";
+                  },
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
+                errorStyle: TextStyle(color: Colors.pink),
+                errorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedErrorBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                ),
+                focusedBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.teal),
+                ),
+              ),
+              readOnly: true,
+              onTap: () async {
+                await showDatePicker(
+                  context: context,
+                  initialDate: hintText["deadline"] == ""
+                      ? _deadlineController.text == ""
+                          ? DateTime.now()
+                          : DateTime.parse(_deadlineController.text)
+                      : DateTime.parse(hintText["deadline"]!),
+                  firstDate: DateTime(2022),
+                  lastDate: DateTime(2122),
+                ).then((value) {
+                  if (value != null) {
+                    _deadlineController.text =
+                        DateFormat('yyyy-MM-dd').format(value);
+                  }
+                });
+              },
+            ),
+          )
         ],
       ),
     );
@@ -246,7 +312,10 @@ class _TodoModalState extends State<TodoModal> {
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.labelLarge,
       ),
-      child: Text(widget.type),
+      child: Text(
+        widget.type,
+        style: TextStyle(color: Colors.teal),
+      ),
     );
   }
 
@@ -262,7 +331,10 @@ class _TodoModalState extends State<TodoModal> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Cancel"),
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.teal),
+          ),
           style: TextButton.styleFrom(
             textStyle: Theme.of(context).textTheme.labelLarge,
           ),

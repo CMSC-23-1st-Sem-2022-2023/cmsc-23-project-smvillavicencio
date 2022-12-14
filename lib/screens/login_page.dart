@@ -36,7 +36,28 @@ class _LoginPageState extends State<LoginPage> {
       },
       decoration: InputDecoration(
         labelText: 'Email',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
     );
 
     Widget password = TextFormField(
@@ -50,14 +71,39 @@ class _LoginPageState extends State<LoginPage> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: 'Pasword',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        errorStyle: TextStyle(color: Colors.pink),
+        errorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.pink),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderRadius: new BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
       ),
+      cursorColor: Colors.white,
+      style: TextStyle(color: Colors.white),
     );
 
     Widget loginButton = Padding(
       key: const Key('loginButton'),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.teal,
+          fixedSize: Size(100, 40),
+        ),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             String? message = await context
@@ -70,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor:
-                  message == "Logging in..." ? Colors.green : Colors.red,
+                  message == "Logging in..." ? Colors.teal : Colors.pink,
               webBgColor: message == "Logging in..."
                   ? "linear-gradient(to right, #4caf4f, #4caf4f)"
                   : "linear-gradient(to right, #dc1c13, #dc1c13)",
@@ -87,8 +133,12 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget signUpButton = Padding(
       key: const Key('signUpButton'),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.teal,
+          fixedSize: Size(100, 40),
+        ),
         onPressed: () async {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -108,8 +158,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-            email,
-            password,
+            Padding(padding: EdgeInsets.all(10), child: email),
+            Padding(padding: EdgeInsets.all(10), child: password),
             loginButton,
             signUpButton,
           ],

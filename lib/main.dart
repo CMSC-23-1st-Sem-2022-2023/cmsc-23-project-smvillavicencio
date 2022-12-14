@@ -36,17 +36,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SimpleTodo',
+      title: 'Shared Todo',
       initialRoute: '/',
       routes: {
         '/': (context) => const AuthWrapper(),
         '/todo': (context) => TodoPage(),
         '/friends': (context) => FriendsPage(),
       },
-      theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(),
-        // displayColor: Colors.white,
-      ),
+      theme: ThemeData.dark(
+          // displayColor: Colors.white,
+          ),
     );
   }
 }

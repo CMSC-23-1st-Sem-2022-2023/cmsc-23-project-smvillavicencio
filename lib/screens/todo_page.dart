@@ -120,7 +120,6 @@ class _TodoPageState extends State<TodoPage> {
                   ),
                 );
               },
-              // backgroundColor: Color(0xFF5F18C5),
               child: const Icon(Icons.add_outlined),
             )
           : null,
@@ -167,7 +166,11 @@ class _TodoPageState extends State<TodoPage> {
                 child: const Icon(Icons.delete),
               ),
               child: ListTile(
-                title: Text(todo.title),
+                title: todo.description == ""
+                    ? Text(todo.title)
+                    : Text("${todo.title} - ${todo.description}"),
+                subtitle: Text(
+                    "Deadline: ${DateFormat('yMMMMd').format(todo.deadline)}"),
                 leading: Checkbox(
                   value: todo.completed,
                   onChanged: (bool? value) {
@@ -270,7 +273,11 @@ class _TodoPageState extends State<TodoPage> {
                   return Container();
                 }
                 return ListTile(
-                  title: Text(todo.title),
+                  title: todo.description == ""
+                      ? Text(todo.title)
+                      : Text("${todo.title} - ${todo.description}"),
+                  subtitle: Text(
+                      "Deadline: ${DateFormat('yMMMMd').format(todo.deadline)}"),
                   leading: Checkbox(
                     value: todo.completed,
                     onChanged: null,
@@ -333,19 +340,26 @@ class _TodoPageState extends State<TodoPage> {
               case ("edit"):
                 {
                   return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.teal,
+                      child: Icon(Icons.person),
+                    ),
                     title: Text(notif.body),
-                    trailing: Text(DateFormat('MMMd').format(notif.timestamp)),
+                    subtitle: Text(DateFormat('MMMd').format(notif.timestamp)),
                   );
                 }
               case ("deadline"):
                 {
                   final diff = notif.timestamp.difference(DateTime.now());
-                  print(
-                      "${notif.body}:: ${notif.timestamp}, ${DateTime.now()}, ${diff.inHours}");
+
                   if (diff.inHours < 0) {
                     return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.pink,
+                        child: Icon(Icons.timer),
+                      ),
                       title: Text(notif.body),
-                      trailing:
+                      subtitle:
                           Text(DateFormat('MMMd').format(notif.timestamp)),
                     );
                   }
