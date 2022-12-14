@@ -6,16 +6,16 @@ Flutter mobile application composed of a sign in, sign-up and a shared todo list
 ### CMSC 23 - D5L
 
 ## Screenshots
-![Screenshot](screenshots/login.PNG)
-![Screenshot](screenshots/signup.PNG)
-![Screenshot](screenshots/profile.PNG)
-![Screenshot](screenshots/drawer.PNG)
-![Screenshot](screenshots/todo.PNG)
-![Screenshot](screenshots/friendstodo.PNG)
-![Screenshot](screenshots/notifications.PNG)
-![Screenshot](screenshots/search.PNG)
-![Screenshot](screenshots/friendrequests.PNG)
-![Screenshot](screenshots/friends.PNG)
+![Screenshot](images/login.PNG)
+![Screenshot](images/signup.PNG)
+![Screenshot](images/profile.PNG)
+![Screenshot](images/drawer.PNG)
+![Screenshot](images/todo.PNG)
+![Screenshot](images/friendstodo.PNG)
+![Screenshot](images/notifications.PNG)
+![Screenshot](images/search.PNG)
+![Screenshot](images/friendrequests.PNG)
+![Screenshot](images/friends.PNG)
 
 ## Things you did in the code
 Most of the code came from past exercises. I modified the models so that it will comply with the project specifications. The Todo notifications are only a page and does not inform the user whenever a notification is added. 
