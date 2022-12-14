@@ -1,8 +1,10 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
+import 'package:cmsc23_project_villavicencio/providers/notification_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
 import 'package:cmsc23_project_villavicencio/screens/friends_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/login_page.dart';
+import 'package:cmsc23_project_villavicencio/screens/notification_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/todo_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +14,18 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: ((context) => UsersProvider())),
       ChangeNotifierProvider(create: ((context) => TodoListProvider())),
       ChangeNotifierProvider(create: ((context) => AuthProvider())),
+      ChangeNotifierProvider(create: ((context) => NotificationsProvider())),
     ], child: const MyApp()),
   );
 }
@@ -37,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const AuthWrapper(),
         '/todo': (context) => TodoPage(),
         '/friends': (context) => FriendsPage(),
+        '/notifications': (context) => NotificationPage(),
       },
       theme: ThemeData(
         textTheme: GoogleFonts.robotoTextTheme(),

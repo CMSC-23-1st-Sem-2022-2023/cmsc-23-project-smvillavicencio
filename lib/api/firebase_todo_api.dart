@@ -13,7 +13,7 @@ class FirebaseTodoAPI {
         'id': docRef.id,
       });
 
-      return "Successfully added todo!";
+      return docRef.id;
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
@@ -22,6 +22,14 @@ class FirebaseTodoAPI {
   Stream<QuerySnapshot> getAllTodos() {
     return db.collection("todos").snapshots();
   }
+
+  Stream<QuerySnapshot> getUserTodos(String uid) {
+    return db.collection("todos").where("userId", isEqualTo: uid).snapshots();
+  }
+
+  // Stream<DocumentSnapshot> getOneTodo(String todoId){
+  //   return db.collection("todos").doc(todoId)
+  // }
 
   Future<String> deleteTodo(String? id) async {
     try {
@@ -34,7 +42,7 @@ class FirebaseTodoAPI {
   }
 
   Future<String> editTodo(String? id, String title, String description,
-      String deadline, String displayName) async {
+      DateTime deadline, String displayName) async {
     try {
       await db.collection("todos").doc(id).update({
         "title": title,

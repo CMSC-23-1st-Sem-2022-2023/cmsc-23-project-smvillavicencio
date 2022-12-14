@@ -1,4 +1,6 @@
+import 'package:cmsc23_project_villavicencio/models/notification_model.dart';
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
+import 'package:cmsc23_project_villavicencio/providers/notification_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +114,8 @@ class TodoModal extends StatelessWidget {
         Map<String, String> hintText = {
           "title": context.read<TodoListProvider>().selected.title,
           "description": context.read<TodoListProvider>().selected.description,
-          "deadline": context.read<TodoListProvider>().selected.deadline,
+          "deadline": DateFormat('yMMMMd')
+              .format(context.read<TodoListProvider>().selected.deadline),
         };
         return _buildForm(context, hintText);
 
@@ -126,7 +129,7 @@ class TodoModal extends StatelessWidget {
     // List<Todo> todoItems = context.read<TodoListProvider>().todo;
 
     return TextButton(
-      onPressed: () {
+      onPressed: () async {
         switch (type) {
           case 'Add':
             {
@@ -135,7 +138,7 @@ class TodoModal extends StatelessWidget {
                 Todo temp = Todo(
                   userId: uid,
                   completed: false,
-                  deadline: _deadlineController.text,
+                  deadline: DateTime.parse(_deadlineController.text),
                   description: _descriptionController.text,
                   title: _titleController.text,
                   lastEditedBy: displayName,
@@ -143,8 +146,19 @@ class TodoModal extends StatelessWidget {
                       .format(DateTime.now()),
                 );
 
-                context.read<TodoListProvider>().addTodo(temp, displayName);
+                Future<String> todoId =
+                    context.read<TodoListProvider>().addTodo(temp, displayName);
 
+                Notifications notif = Notifications(
+                    type: "deadline",
+                    sourceId: await todoId,
+                    body:
+                        "Your task ${temp.title} is due on ${DateFormat("MMMMd").format(temp.deadline)}.",
+                    timestamp: temp.deadline.subtract(Duration(days: 1)));
+
+                context
+                    .read<NotificationsProvider>()
+                    .addNotification(temp.userId, notif);
                 // Remove dialog after adding
                 Navigator.of(context).pop();
               }
@@ -152,12 +166,27 @@ class TodoModal extends StatelessWidget {
             }
           case 'Edit':
             if (_formKey.currentState!.validate()) {
+              Todo todoBefore = context.read<TodoListProvider>().selected;
+
               context.read<TodoListProvider>().editTodo(
                     _titleController.text,
                     _descriptionController.text,
-                    _deadlineController.text,
+                    DateTime.parse(_deadlineController.text),
                     displayName,
                   );
+
+              if (todoBefore.userId != uid) {
+                Notifications notif = Notifications(
+                    type: "edit",
+                    sourceId: uid,
+                    body: todoBefore.title == _titleController.text
+                        ? "$displayName edited ${todoBefore.title}."
+                        : "$displayName changed ${todoBefore.title}'s title to ${_titleController.text}.",
+                    timestamp: DateTime.now());
+                context
+                    .read<NotificationsProvider>()
+                    .addNotification(todoBefore.userId, notif);
+              }
 
               // Remove dialog after editing
               Navigator.of(context).pop();

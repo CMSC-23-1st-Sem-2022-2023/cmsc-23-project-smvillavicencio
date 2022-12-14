@@ -1,10 +1,13 @@
+import 'package:cmsc23_project_villavicencio/models/notification_model.dart';
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
+import 'package:cmsc23_project_villavicencio/providers/notification_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
 import 'package:cmsc23_project_villavicencio/screens/modal_todo.dart';
 import 'package:cmsc23_project_villavicencio/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,11 +56,14 @@ class _TodoPageState extends State<TodoPage> {
     String userDisplayName = context.watch<AuthProvider>().user!.displayName!;
     context.watch<TodoListProvider>().fetchTodos();
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+    context.watch<NotificationsProvider>().fetchNotifications(currentUserID);
+    Stream<QuerySnapshot> notifications =
+        context.watch<NotificationsProvider>().notifications;
 
     List<Widget> _widgetOptions = <Widget>[
       _buildMyToDo(todosStream, currentUserID, userDisplayName),
       _buildFriendsToDo(todosStream, currentUserStream, userDisplayName),
-
+      _buildNotifications(notifications),
       // _buildFriends(usersStream, currentUserStream), // friends
       // _buildRequests(usersStream, currentUserStream), // friend requests
       // _buildSearch(usersStream, currentUserStream), // friend search
@@ -82,6 +88,10 @@ class _TodoPageState extends State<TodoPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.task),
             label: 'Friend\'s To Dos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -281,6 +291,63 @@ class _TodoPageState extends State<TodoPage> {
                 );
               }),
             );
+          },
+        );
+      },
+    );
+  }
+
+  StreamBuilder _buildNotifications(
+      Stream<QuerySnapshot<Object?>> notifications) {
+    return StreamBuilder(
+      stream: notifications,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Text("No Notifications Found"),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data?.docs.length,
+          itemBuilder: (context, index) {
+            Notifications notif = Notifications.fromJson(
+                snapshot.data?.docs[index].data() as Map<String, dynamic>);
+            switch (notif.type) {
+              case ("edit"):
+                {
+                  return ListTile(
+                    title: Text(notif.body),
+                    trailing: Text(DateFormat('MMMd').format(notif.timestamp)),
+                  );
+                }
+              case ("deadline"):
+                {
+                  final diff = notif.timestamp.difference(DateTime.now());
+                  print(
+                      "${notif.body}:: ${notif.timestamp}, ${DateTime.now()}, ${diff.inHours}");
+                  if (diff.inHours < 0) {
+                    return ListTile(
+                      title: Text(notif.body),
+                      trailing:
+                          Text(DateFormat('MMMd').format(notif.timestamp)),
+                    );
+                  }
+                  return Container();
+                }
+              default:
+                {
+                  return Text("Default");
+                }
+            }
           },
         );
       },

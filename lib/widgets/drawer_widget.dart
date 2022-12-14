@@ -1,5 +1,5 @@
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
-import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
+// import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +48,15 @@ class DrawerWidget extends StatelessWidget {
             Navigator.pushNamed(context, "/friends");
           },
         ),
+        // ListTile(
+        //   leading: Icon(Icons.notifications),
+        //   title: Text('Notifications'),
+        //   onTap: () async {
+        //     Navigator.pop(context);
+        //     Navigator.pop(context);
+        //     Navigator.pushNamed(context, '/notifications');
+        //   },
+        // ),
         ListTile(
           leading: Icon(Icons.logout),
           title: Text('Logout'),

@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,21 +13,14 @@ class FirebaseUsersAPI {
     return db.collection("users").snapshots();
   }
 
-  // Future<String> getUserDisplayName(String uid) {
-  //   return db
-  //       .collection("users")
-  //       .doc(uid)
-  //       .get()
-  //       .then((value) => "${value["firstName"]} ${value["lastName"]}");
-  // }
-
-  // Stream<QuerySnapshot> getCurrentUser() {
-  //   // returns the logged in user
-  //   return db
-  //       .collection("users")
-  //       .where("id", isEqualTo: )
-  //       .snapshots();
-  // }
+  Stream<QuerySnapshot> getNotifications(String uid) {
+    return db
+        .collection("users")
+        .doc(uid)
+        .collection("notifications")
+        .orderBy("timestamp")
+        .snapshots();
+  }
 
   Future<String> removeFriend(
       String currentUserId, String unfriendedUserId) async {
