@@ -1,7 +1,8 @@
 /*
   Created by: Sebastian M. Villavicencio
+  Section: D5L
   Date: 13 December 2022
-  Description: Shared todo app with authentication
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseNotificationsAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  // get list of notifications arranged from newst to oldest
   Stream<QuerySnapshot> getNotifications(String uid) {
     return db
         .collection("users")

@@ -1,3 +1,10 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 2 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cmsc23_project_villavicencio/models/notification_model.dart';
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
@@ -15,8 +22,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/auth_provider.dart';
 
 class TodoPage extends StatefulWidget {
+  // page where user's todo, friend's todo, and notifications are seen.
   const TodoPage({super.key});
-
   @override
   State<TodoPage> createState() => _TodoPageState();
 }
@@ -49,24 +56,25 @@ class _TodoPageState extends State<TodoPage> {
     }
 
     String currentUserID = context.watch<AuthProvider>().user!.uid;
-    // access the list of todos in the provider
+    String userDisplayName = context.watch<AuthProvider>().user!.displayName!;
+
+    // fetch current user
     context.watch<UsersProvider>().fetchOneUser(currentUserID);
     Stream<DocumentSnapshot> currentUserStream =
         context.watch<UsersProvider>().user;
-    String userDisplayName = context.watch<AuthProvider>().user!.displayName!;
+    // fetch all todos
     context.watch<TodoListProvider>().fetchTodos();
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+    // fetch notifications of the user
     context.watch<NotificationsProvider>().fetchNotifications(currentUserID);
     Stream<QuerySnapshot> notifications =
         context.watch<NotificationsProvider>().notifications;
 
     List<Widget> _widgetOptions = <Widget>[
+      // bottom nav bar options
       _buildMyToDo(todosStream, currentUserID, userDisplayName),
       _buildFriendsToDo(todosStream, currentUserStream, userDisplayName),
       _buildNotifications(notifications),
-      // _buildFriends(usersStream, currentUserStream), // friends
-      // _buildRequests(usersStream, currentUserStream), // friend requests
-      // _buildSearch(usersStream, currentUserStream), // friend search
     ];
 
     return Scaffold(

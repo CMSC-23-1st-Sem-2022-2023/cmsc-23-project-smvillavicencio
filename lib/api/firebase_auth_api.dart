@@ -1,7 +1,8 @@
 /*
   Created by: Sebastian M. Villavicencio
-  Date: 24 November 2022
-  Description: Todo app with authentication
+  Section: D5L
+  Date: 25 November 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
 */
 
 import 'package:firebase_auth/firebase_auth.dart';

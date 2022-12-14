@@ -1,8 +1,10 @@
 /*
   Created by: Sebastian M. Villavicencio
+  Section: D5L
   Date: 24 November 2022
-  Description: Todo app with authentication
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
 */
+
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:cmsc23_project_villavicencio/screens/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
+  // page where existing users can log in to their accounts
   const LoginPage({super.key});
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -33,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
       },
       decoration: InputDecoration(
         labelText: 'Email',
-        hintText: 'Email',
       ),
     );
 
@@ -49,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
       },
       decoration: InputDecoration(
         labelText: 'Password',
-        hintText: 'Password',
       ),
     );
 
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             String? message = await context
                 .read<AuthProvider>()
                 .signIn(emailController.text, passwordController.text);
-
+            // show message as a flutter toast, may be error or success messages
             Fluttertoast.showToast(
               msg: message,
               timeInSecForIosWeb: 5,
@@ -78,7 +79,9 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         },
-        child: const Text('Log In',),
+        child: const Text(
+          'Log In',
+        ),
       ),
     );
 
@@ -93,7 +96,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         },
-        child: const Text('Sign Up',),
+        child: const Text(
+          'Sign Up',
+        ),
       ),
     );
 
@@ -122,9 +127,7 @@ class _LoginPageState extends State<LoginPage> {
               const Text(
                 "Login",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               loginForm,
             ],

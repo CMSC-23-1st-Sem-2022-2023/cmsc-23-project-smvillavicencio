@@ -1,7 +1,8 @@
 /*
   Created by: Sebastian M. Villavicencio
-  Date: 17 November 2022
-  Description: Friends app with networking
+  Section: D5L
+  Date: 2 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
 */
 
 import 'package:cmsc23_project_villavicencio/api/firebase_users_api.dart';
@@ -23,13 +24,10 @@ class UsersProvider with ChangeNotifier {
 
   fetchOneUser(String uid) {
     _user = firebaseService.getOneUser(uid);
-    // _userDisplayName = firebaseService.getUserDisplayName(uid);
-    // notifyListeners();
   }
 
   fetchAllUsers() {
     _usersStream = firebaseService.getAllUsers();
-    // notifyListeners();
   }
 
   unfriendUser(String currId, String friendId) {

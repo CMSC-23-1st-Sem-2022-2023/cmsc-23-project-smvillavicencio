@@ -1,3 +1,10 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 9 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cmsc23_project_villavicencio/api/firebase_todo_api.dart';
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +30,6 @@ class TodoListProvider with ChangeNotifier {
 
   void fetchTodos() {
     _todosStream = firebaseService.getAllTodos();
-    // notifyListeners();
   }
 
   Future<String> addTodo(Todo item, String displayName) async {

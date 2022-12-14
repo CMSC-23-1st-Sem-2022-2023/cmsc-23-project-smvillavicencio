@@ -1,3 +1,10 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 2 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
@@ -9,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FriendsPage extends StatefulWidget {
+  // friends, friend requests, and search users can be found on this page
   const FriendsPage({super.key});
 
   @override
@@ -68,13 +76,12 @@ class _FriendsPageState extends State<FriendsPage> {
     context.watch<UsersProvider>().fetchAllUsers();
     Stream<DocumentSnapshot> currentUserStream =
         context.watch<UsersProvider>().user;
-    // Stream<QuerySnapshot> currentUserStream =
-    //     context.watch<UsersProvider>().currentUser;
 
     List<Widget> _widgetOptions = <Widget>[
+      // items on the bottom nav bar
       _buildFriends(usersStream, currentUserStream), // friends
       _buildRequests(usersStream, currentUserStream), // friend requests
-      _buildSearch(usersStream, currentUserStream), // friend requests
+      _buildSearch(usersStream, currentUserStream), // search users
     ];
 
     return Scaffold(
@@ -105,6 +112,7 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
+  // method where friends are built, there is an unfriend button
   StreamBuilder _buildFriends(Stream<QuerySnapshot<Object?>> usersStream,
       Stream<DocumentSnapshot<Object?>> currentUserStream) {
     return StreamBuilder(
@@ -175,6 +183,7 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
+  // users can accept or reject friend requests on this page
   StreamBuilder _buildRequests(Stream<QuerySnapshot<Object?>> usersStream,
       Stream<DocumentSnapshot<Object?>> currentUserStream) {
     return StreamBuilder(
@@ -244,6 +253,7 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
+  // search users when the search button is clicked
   StreamBuilder _buildSearch(Stream<QuerySnapshot<Object?>> usersStream,
       Stream<DocumentSnapshot<Object?>> currentUserStream) {
     return StreamBuilder(
@@ -366,6 +376,7 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
+  // build buttons according to the classification (friends, sent, received)
   ListTile _buildButtons(User user, User currUser) {
     if (currUser.friends.contains(user.id)) {
       return ListTile(

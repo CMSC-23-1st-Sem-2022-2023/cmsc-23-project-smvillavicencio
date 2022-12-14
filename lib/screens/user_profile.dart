@@ -1,3 +1,10 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 2 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cmsc23_project_villavicencio/models/user_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
@@ -6,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
+  // page where details of the user with the uid parameter are seen
   String uid;
   ProfilePage({super.key, required this.uid});
   @override
@@ -17,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     if (!context.watch<AuthProvider>().isAuthenticated) {
+      // unauthenticated users cannot access profile pages
       return Center(
         child: Column(
           children: [
@@ -31,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
-
+    // get  all streams needed for building the profile page
     String currentUserId = context.watch<AuthProvider>().user!.uid;
     context.watch<UsersProvider>().fetchOneUser(widget.uid);
     Stream user = context.watch<UsersProvider>().user;
@@ -65,9 +74,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     User.fromJson(snapshot.data.data() as Map<String, dynamic>);
 
                 print(snapshot.data.data());
-                // print(snapshot['userName']);
+
                 return Container(
                   child: Column(children: [
+                    Text(
+                      "ID: ${profileUser.id}",
+                    ),
                     Text(
                       "Name: ${profileUser.firstName} ${profileUser.lastName}",
                     ),

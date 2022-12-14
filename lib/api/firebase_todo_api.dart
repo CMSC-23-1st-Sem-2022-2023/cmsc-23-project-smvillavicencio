@@ -1,3 +1,10 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 2 December 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -26,10 +33,6 @@ class FirebaseTodoAPI {
   Stream<QuerySnapshot> getUserTodos(String uid) {
     return db.collection("todos").where("userId", isEqualTo: uid).snapshots();
   }
-
-  // Stream<DocumentSnapshot> getOneTodo(String todoId){
-  //   return db.collection("todos").doc(todoId)
-  // }
 
   Future<String> deleteTodo(String? id) async {
     try {

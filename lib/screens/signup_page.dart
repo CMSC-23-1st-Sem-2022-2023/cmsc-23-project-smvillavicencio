@@ -1,13 +1,18 @@
+/*
+  Created by: Sebastian M. Villavicencio
+  Section: D5L
+  Date: 25 November 2022
+  Description: Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends. 
+*/
+
 import 'package:cmsc23_project_villavicencio/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-// import 'package:exer7_villavicencio/providers/auth_provider.dart';
-
 class SignupPage extends StatefulWidget {
+  // page where users can create a new account
   const SignupPage({super.key});
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -17,6 +22,7 @@ class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    // required fields have validators og the input
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController firstNameController = TextEditingController();
@@ -153,7 +159,7 @@ class _SignupPageState extends State<SignupPage> {
             if (message == "Successfully signed up!") {
               Navigator.pop(context);
             }
-
+            // show message as a flutter toast, may be error or success messages
             Fluttertoast.showToast(
               msg: message,
               timeInSecForIosWeb: 5,

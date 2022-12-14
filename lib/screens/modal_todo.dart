@@ -2,19 +2,16 @@ import 'package:cmsc23_project_villavicencio/models/notification_model.dart';
 import 'package:cmsc23_project_villavicencio/models/todo_model.dart';
 import 'package:cmsc23_project_villavicencio/providers/notification_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
+import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-class TodoModal extends StatelessWidget {
+class TodoModal extends StatefulWidget {
   String type;
   String uid;
   String displayName;
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _deadlineController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   TodoModal({
     super.key,
     required this.type,
@@ -22,9 +19,37 @@ class TodoModal extends StatelessWidget {
     required this.displayName,
   });
 
+  @override
+  _TodoModalState createState() => _TodoModalState();
+}
+
+class _TodoModalState extends State<TodoModal> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _deadlineController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _permissionDenied = false;
+
+  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    // _checkCalendarPermission();
+  }
+
+  // _checkCalendarPermission() async {
+  //   var permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
+  //   if (!permissionsGranted.isSuccess) {
+  //     setState(() {
+  //       _permissionDenied = true;
+  //     });
+  //   }
+  // }
+
   // Method to show the title of the modal depending on the functionality
   Text _buildTitle() {
-    switch (type) {
+    switch (widget.type) {
       case 'Add':
         return const Text("Add new todo");
       case 'Edit':
@@ -36,6 +61,7 @@ class TodoModal extends StatelessWidget {
     }
   }
 
+  // builds the required fields when editting or adding
   Form _buildForm(BuildContext context, Map<String, String> hintText) {
     return Form(
       key: _formKey,
@@ -103,7 +129,7 @@ class TodoModal extends StatelessWidget {
 
   // Method to build the content or body depending on the functionality
   Widget _buildContent(BuildContext context) {
-    switch (type) {
+    switch (widget.type) {
       case 'Delete':
         {
           return Text(
@@ -126,32 +152,32 @@ class TodoModal extends StatelessWidget {
   }
 
   TextButton _dialogAction(BuildContext context) {
-    // List<Todo> todoItems = context.read<TodoListProvider>().todo;
-
     return TextButton(
       onPressed: () async {
-        switch (type) {
+        switch (widget.type) {
           case 'Add':
             {
               if (_formKey.currentState!.validate()) {
                 // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
                 Todo temp = Todo(
-                  userId: uid,
+                  userId: widget.uid,
                   completed: false,
                   deadline: DateTime.parse(_deadlineController.text),
                   description: _descriptionController.text,
                   title: _titleController.text,
-                  lastEditedBy: displayName,
+                  lastEditedBy: widget.displayName,
                   lastEditedOn: DateFormat('EEE, MMM d, hh:mm aaa')
                       .format(DateTime.now()),
                 );
 
-                Future<String> todoId =
-                    context.read<TodoListProvider>().addTodo(temp, displayName);
+                Future<String> tid = context
+                    .read<TodoListProvider>()
+                    .addTodo(temp, widget.displayName);
+                String todoId = await tid;
 
                 Notifications notif = Notifications(
                     type: "deadline",
-                    sourceId: await todoId,
+                    sourceId: todoId,
                     body:
                         "Your task ${temp.title} is due on ${DateFormat("MMMMd").format(temp.deadline)}.",
                     timestamp: temp.deadline.subtract(Duration(days: 1)));
@@ -159,6 +185,20 @@ class TodoModal extends StatelessWidget {
                 context
                     .read<NotificationsProvider>()
                     .addNotification(temp.userId, notif);
+
+                if (!_permissionDenied) {
+                  final Event newEvent = Event(todoId,
+                      title: temp.title,
+                      description: temp.description,
+                      start: tz.TZDateTime.from(temp.deadline, tz.local),
+                      allDay: true);
+
+                  final createEventResult =
+                      await _deviceCalendarPlugin.createOrUpdateEvent(newEvent);
+                  if (createEventResult!.isSuccess) {
+                    print("Added to calendar");
+                  }
+                }
                 // Remove dialog after adding
                 Navigator.of(context).pop();
               }
@@ -172,16 +212,17 @@ class TodoModal extends StatelessWidget {
                     _titleController.text,
                     _descriptionController.text,
                     DateTime.parse(_deadlineController.text),
-                    displayName,
+                    widget.displayName,
                   );
 
-              if (todoBefore.userId != uid) {
+              if (todoBefore.userId != widget.uid) {
+                // if owner of the todo is not the editor then create a notification
                 Notifications notif = Notifications(
                     type: "edit",
-                    sourceId: uid,
+                    sourceId: widget.uid,
                     body: todoBefore.title == _titleController.text
-                        ? "$displayName edited ${todoBefore.title}."
-                        : "$displayName changed ${todoBefore.title}'s title to ${_titleController.text}.",
+                        ? "${widget.displayName} edited ${todoBefore.title}."
+                        : "${widget.displayName} changed ${todoBefore.title}'s title to ${_titleController.text}.",
                     timestamp: DateTime.now());
                 context
                     .read<NotificationsProvider>()
@@ -205,7 +246,7 @@ class TodoModal extends StatelessWidget {
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.labelLarge,
       ),
-      child: Text(type),
+      child: Text(widget.type),
     );
   }
 
