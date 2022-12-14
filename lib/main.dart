@@ -4,7 +4,6 @@ import 'package:cmsc23_project_villavicencio/providers/todo_provider.dart';
 import 'package:cmsc23_project_villavicencio/providers/user_provider.dart';
 import 'package:cmsc23_project_villavicencio/screens/friends_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/login_page.dart';
-import 'package:cmsc23_project_villavicencio/screens/notification_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/todo_page.dart';
 import 'package:cmsc23_project_villavicencio/screens/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => const AuthWrapper(),
         '/todo': (context) => TodoPage(),
         '/friends': (context) => FriendsPage(),
-        '/notifications': (context) => NotificationPage(),
       },
       theme: ThemeData(
         textTheme: GoogleFonts.robotoTextTheme(),
